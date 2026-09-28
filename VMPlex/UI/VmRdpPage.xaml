@@ -16,7 +16,7 @@
             <DockPanel Grid.Column="0">
                 <ui:AppBarButton x:Name="vmPower" ToolTip="Power" Click="OnPowerCommand" IsTabStop="False" IsCompact="True" Focusable="False">
                     <ui:AppBarButton.Icon>
-                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7E8;"/>
+                        <ui:FontIcon x:Name="vmPowerIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE768;"/>
                     </ui:AppBarButton.Icon>
                 </ui:AppBarButton>
                 <ui:AppBarButton x:Name="vmPause" Icon="Pause" ToolTip="Pause (Power On to Resume)" Click="OnPauseCommand" IsTabStop="False" IsCompact="True" Focusable="False"/>

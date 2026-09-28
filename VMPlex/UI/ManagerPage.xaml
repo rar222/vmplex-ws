@@ -57,31 +57,47 @@
             <DockPanel Grid.Column="0">
                 <ui:AppBarButton x:Name="vmPower" ToolTip="Power" Click="OnPowerCommand" IsTabStop="False" IsCompact="True">
                     <ui:AppBarButton.Icon>
-                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7E8;"/>
+                        <ui:FontIcon FontFamily="Segoe MDL2 Assets">
+                            <ui:FontIcon.Style>
+                                <Style TargetType="ui:FontIcon">
+                                    <Setter Property="Glyph" Value="&#xE768;"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=vmList, Path=SelectedItem.IsPoweredOn}" Value="True">
+                                            <Setter Property="Glyph" Value="&#xE71A;"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:FontIcon.Style>
+                        </ui:FontIcon>
                     </ui:AppBarButton.Icon>
                 </ui:AppBarButton>
-                <ui:AppBarButton x:Name="vmPause" Icon="Pause" ToolTip="Pause (Power On to Resume)" Click="OnPauseCommand" IsTabStop="False" IsCompact="True"/>
-                <ui:AppBarButton x:Name="vmReset" ToolTip="Reset" Click="OnResetCommand" IsTabStop="False" IsCompact="True">
+                <ui:AppBarButton x:Name="vmPause" Icon="Pause" ToolTip="Pause (Power On to Resume)" Click="OnPauseCommand" IsTabStop="False" IsCompact="True"
+                                 IsEnabled="{Binding ElementName=vmList, Path=SelectedItem.IsPoweredOn, FallbackValue=False}"/>
+                <ui:AppBarButton x:Name="vmReset" ToolTip="Reset" Click="OnResetCommand" IsTabStop="False" IsCompact="True"
+                                 IsEnabled="{Binding ElementName=vmList, Path=SelectedItem.IsPoweredOn, FallbackValue=False}">
                     <ui:AppBarButton.Icon>
                         <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC58;"/>
                     </ui:AppBarButton.Icon>
                 </ui:AppBarButton>
                 <ui:AppBarSeparator IsCompact="True"/>
-                <ui:AppBarButton x:Name="vmSave" ToolTip="Save (Power On to Resume)" Click="OnSaveCommand" IsTabStop="False" IsCompact="True">
+                <ui:AppBarButton x:Name="vmSave" ToolTip="Save (Power On to Resume)" Click="OnSaveCommand" IsTabStop="False" IsCompact="True"
+                                 IsEnabled="{Binding ElementName=vmList, Path=SelectedItem.IsPoweredOn, FallbackValue=False}">
                     <ui:AppBarButton.Icon>
                         <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE708;"/>
                     </ui:AppBarButton.Icon>
                 </ui:AppBarButton>
-                <ui:AppBarButton x:Name="vmReboot" Icon="Refresh" ToolTip="Reboot" Click="OnRebootCommand" IsTabStop="False" IsCompact="True"/>
-                <ui:AppBarButton x:Name="vmShutdown" ToolTip="Shutdown" Click="OnShutdownCommand" IsTabStop="False" IsCompact="True">
+                <ui:AppBarButton x:Name="vmReboot" Icon="Refresh" ToolTip="Reboot" Click="OnRebootCommand" IsTabStop="False" IsCompact="True"
+                                 IsEnabled="{Binding ElementName=vmList, Path=SelectedItem.IsRunning, FallbackValue=False}"/>
+                <ui:AppBarButton x:Name="vmShutdown" ToolTip="Shutdown" Click="OnShutdownCommand" IsTabStop="False" IsCompact="True"
+                                 IsEnabled="{Binding ElementName=vmList, Path=SelectedItem.IsRunning, FallbackValue=False}">
                     <ui:AppBarButton.Icon>
                         <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF83D;"/>
                     </ui:AppBarButton.Icon>
                 </ui:AppBarButton>
                 <ui:AppBarSeparator IsCompact="True"/>
-                <ui:AppBarButton x:Name="vmDebug" ToolTip="Launch Debugger" Click="OnDebugCommand" IsTabStop="False" IsCompact="True">
+                <ui:AppBarButton x:Name="vmConnect" ToolTip="Connect" Click="VmContextMenu_Connect" IsTabStop="False" IsCompact="True">
                     <ui:AppBarButton.Icon>
-                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEBE8;"/>
+                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8A7;"/>
                     </ui:AppBarButton.Icon>
                 </ui:AppBarButton>
                 <ui:AppBarSeparator IsCompact="True"/>
@@ -104,6 +120,12 @@
                 <ui:AppBarSeparator IsCompact="True"/>
                 <ui:AppBarButton x:Name="vmAdd" Icon="Add" ToolTip="Create VM" Click="OnAddCommand" IsTabStop="False" IsCompact="True"/>
                 <ui:AppBarButton x:Name="vmDelete" Icon="Delete" ToolTip="Delete VM" Click="OnDeleteCommand" IsTabStop="False" IsCompact="True"/>
+                <ui:AppBarSeparator IsCompact="True"/>
+                <ui:AppBarButton x:Name="vmDebug" ToolTip="Launch Debugger" Click="OnDebugCommand" IsTabStop="False" IsCompact="True">
+                    <ui:AppBarButton.Icon>
+                        <ui:FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEBE8;"/>
+                    </ui:AppBarButton.Icon>
+                </ui:AppBarButton>
                 <ui:AppBarSeparator IsCompact="True"/>
                 <ui:DropDownButton Name="rdpDropDown" ToolTip="Remote Desktop Connection" IsTabStop="False" CornerRadius="0" Padding="15,11,15,10" FocusVisualMargin="0,0,0,0">
                     <ui:DropDownButton.Style>
@@ -184,7 +206,7 @@
                         <MenuItem Header="Reboot" Click="OnRebootCommand" IsEnabled="{Binding IsRunning}" Style="{StaticResource DefaultMenuItemStyle}"/>
                         <MenuItem Header="Shutdown" Click="OnShutdownCommand" IsEnabled="{Binding IsRunning}" Style="{StaticResource DefaultMenuItemStyle}"/>
                         <Separator/>
-                        <MenuItem Header="Create Checkpoint" Click="OnCreateCheckpoint" Style="{StaticResource DefaultMenuItemStyle}"/>
+                        <MenuItem Header="Create Checkpoint" Click="OnCreateCheckpoint" IsEnabled="{Binding CanCreateCheckpoint}" Style="{StaticResource DefaultMenuItemStyle}"/>
                         <MenuItem Header="Revert" Click="OnRevertCheckpoint" IsEnabled="{Binding CanRevert}" Style="{StaticResource DefaultMenuItemStyle}"/>
                     </ContextMenu>
                 </ListView.Resources>

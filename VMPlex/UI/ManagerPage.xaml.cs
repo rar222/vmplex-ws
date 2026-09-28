@@ -166,6 +166,10 @@ namespace VMPlex.UI
         private void VmContextMenu_Connect(object sender, EventArgs e)
         {
             var vm = GetSelectedVm();
+            if (vm is null)
+            {
+                return;
+            }
             TabControl tc = (TabControl)(((TabItem)this.Parent).Parent);
             OpenVmTab(vm, tc);
         }
