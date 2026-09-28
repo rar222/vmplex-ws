@@ -16,6 +16,19 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "build (Release)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}\\VMPlex.sln",
+                "--configuration",
+                "Release"
+            ],
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "clean",
             "command": "dotnet",
             "type": "process",
@@ -23,6 +36,18 @@
                 "clean",
                 "${workspaceFolder}\\VMPlex.sln"
             ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish (deployment package)",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}\\VMPlex\\VMPlex.csproj",
+                "-p:PublishProfile=FolderProfile"
+            ],
+            "group": "build",
             "problemMatcher": "$msCompile"
         },
         {
