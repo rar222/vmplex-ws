@@ -619,4 +619,24 @@ namespace VMPlex.UI
             throw new NotImplementedException();
         }
     }
+
+    public class BoolToGridLengthConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool isChecked = value is bool b && b;
+            if (!isChecked)
+            {
+                return new GridLength(0);
+            }
+
+            double width = System.Convert.ToDouble(parameter, culture);
+            return new GridLength(width);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
